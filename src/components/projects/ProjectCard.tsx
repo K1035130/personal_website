@@ -4,6 +4,9 @@ import Enso from "@/components/ui/Enso";
 import { statusLabel } from "@/lib/projects";
 import type { Project } from "@/types/project";
 
+/** 卡片上最多显示的标签数，其余折叠为 +N（详情页显示全部） */
+const MAX_TAGS = 4;
+
 interface ProjectCardProps {
   project: Project;
   /** 在列表中的序号，用于编号显示和入场动画的先后 */
@@ -57,7 +60,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
         <div className="mt-auto flex items-end justify-between gap-3 pt-5">
           <ul className="flex flex-wrap gap-1.5">
-            {project.tags.map((tag) => (
+            {project.tags.slice(0, MAX_TAGS).map((tag) => (
               <li
                 key={tag}
                 className="rounded-full border border-line px-2.5 py-0.5 text-[11px] text-ink-soft"
@@ -65,6 +68,11 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                 {tag}
               </li>
             ))}
+            {project.tags.length > MAX_TAGS && (
+              <li className="px-1 py-0.5 text-[11px] text-muted">
+                +{project.tags.length - MAX_TAGS}
+              </li>
+            )}
           </ul>
           <span
             aria-hidden
