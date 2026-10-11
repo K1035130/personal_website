@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProjectGrid from "@/components/projects/ProjectGrid";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { getAllProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
@@ -7,10 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
+  const projects = getAllProjects();
+
   return (
     <div>
-      <h1 className="mb-6 text-3xl font-semibold">Projects</h1>
-      <ProjectGrid projects={getAllProjects()} />
+      <SectionHeading kicker={`${projects.length} works`} title="Projects" />
+      <ProjectGrid projects={projects} />
     </div>
   );
 }

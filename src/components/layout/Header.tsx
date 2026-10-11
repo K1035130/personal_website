@@ -1,22 +1,24 @@
+import { Suspense } from "react";
 import Link from "next/link";
+import Seal from "@/components/ui/Seal";
 import { siteConfig } from "@/config/site";
+import NavLinks, { NavList } from "./NavLinks";
 
 export default function Header() {
   return (
-    <header className="border-b border-black/10 dark:border-white/10">
-      <nav className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-        <Link href="/" className="font-semibold">
-          {siteConfig.name}
+    <header className="sticky top-0 z-40 border-b border-line bg-paper/70 backdrop-blur-md">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <Link href="/" className="group flex items-center gap-3">
+          <Seal
+            text={siteConfig.seal}
+            className="size-8 text-lg transition-transform duration-500 group-hover:-rotate-6"
+          />
+          <span className="font-serif text-xl font-medium tracking-wide">{siteConfig.name}</span>
         </Link>
-        <ul className="flex gap-6 text-sm">
-          {siteConfig.nav.map((item) => (
-            <li key={item.href}>
-              <Link href={item.href} className="hover:underline">
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* usePathname 在未预渲染的动态路由下会挂起，需要 Suspense 兜底 */}
+        <Suspense fallback={<NavList />}>
+          <NavLinks />
+        </Suspense>
       </nav>
     </header>
   );
